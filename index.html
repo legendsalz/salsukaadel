@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Message For You ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-soft: #ffdde1;
+            --pink-deep: #ee9ca7;
+            --heart-color: #ff4d6d;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, var(--pink-soft), var(--pink-deep));
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 90%;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--heart-color);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background: var(--heart-color);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        #noBtn {
+            background: #fff;
+            color: var(--heart-color);
+            border: 2px solid var(--heart-color);
+            position: relative;
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute;
+            color: var(--heart-color);
+            font-size: 1.5rem;
+            animation: float 4s linear infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .hidden { display: none; }
+        
+        .success-img {
+            width: 150px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainCard">
+        <div id="questionContent">
+            <h1>Hai Kamu... ✨</h1>
+            <p>Aku mau tanya sesuatu yang jujur... <br> <b>Mau nggak jadi alasan aku senyum tiap hari?</b></p>
+            
+            <div class="buttons">
+                <button class="btn" id="yesBtn" onclick="celebrate()">Mau!</button>
+                <button class="btn" id="noBtn" onmouseover="moveButton()">Nggak</button>
+            </div>
+        </div>
+
+        <div id="happyContent" class="hidden">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYybmN6dzZueXh6ZzRycXp6ZzRycXp6ZzRycXp6ZzRycXp6ZzR5JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZChars/MDJ9uLGiTLvmo/giphy.gif" class="success-img" alt="Happy Cat">
+            <h1>Yeay! I Love You! ❤️</h1>
+            <p>Chat aku sekarang ya, aku tunggu kabar baiknya! 😉</p>
+            <button class="btn" id="yesBtn" onclick="sendWA()">Kabari Dia ✨</button>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi membuat animasi hati terbang
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHeart, 300);
+
+        // Fungsi menggerakkan tombol "Nggak" saat didekati
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        // Fungsi saat tombol "Mau" diklik
+        function celebrate() {
+            document.getElementById('questionContent').classList.add('hidden');
+            document.getElementById('happyContent').classList.remove('hidden');
+            
+            // Efek tambahan: Hujan hati lebih banyak
+            for(let i=0; i<50; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+        }
+
+        // Fungsi kirim WA otomatis
+        function sendWA() {
+            const message = "Iya, aku mau! ❤️";
+            const phone = "6283831740156"; // Ganti dengan nomor kamu sendiri
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
