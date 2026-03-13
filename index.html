@@ -26,38 +26,53 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 40px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            max-width: 400px;
+            backdrop-filter: blur(15px);
+            max-width: 380px;
             width: 90%;
             z-index: 10;
+            border: 2px solid white;
+        }
+
+        /* Foto dari Link yang Kamu Berikan */
+        .main-photo {
+            width: 100%;
+            max-width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 5px solid white;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
             color: var(--heart-color);
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            margin: 10px 0;
         }
 
         p {
             color: #555;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
         }
 
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            position: relative;
+            gap: 15px;
+            height: 50px; /* Biar container gak goyang pas tombol lari */
+            align-items: center;
         }
 
         .btn {
-            padding: 12px 30px;
+            padding: 12px 25px;
             border: none;
             border-radius: 50px;
             font-size: 1rem;
@@ -70,6 +85,7 @@
             background: var(--heart-color);
             color: white;
             box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            z-index: 100;
         }
 
         #noBtn {
@@ -79,7 +95,7 @@
             position: relative;
         }
 
-        /* Floating Hearts Animation */
+        /* Animasi Hati Terbang */
         .heart {
             position: absolute;
             color: var(--heart-color);
@@ -87,6 +103,7 @@
             animation: float 4s linear infinite;
             opacity: 0;
             z-index: 1;
+            pointer-events: none;
         }
 
         @keyframes float {
@@ -105,33 +122,35 @@
 </head>
 <body>
 
-<div id="questionContent">
-    <img src="https://files.catbox.moe/xsdydp.jpg" style="width: 100%; max-width: 200px; border-radius: 15px; margin-bottom: 15px;">
-    
-    <h1>Hai Kamu... ✨</h1>
-    <p>Aku mau tanya sesuatu yang jujur... <br> <b>Mau nggak jadi alasan aku senyum tiap hari?</b></p>
-    
-    <div class="buttons">
-        <button class="btn" id="yesBtn" onclick="celebrate()">Mau!</button>
-        <button class="btn" id="noBtn" onmouseover="moveButton()">Nggak</button>
-    </div>
-</div>
+    <div class="container" id="mainCard">
+        <div id="questionContent">
+            <img src="https://files.catbox.moe/xsdydp.jpg" class="main-photo" alt="Our Moment">
+            <h1>Hai Cantik... ✨</h1>
+            <p>Aku mau tanya sesuatu yang jujur... <br> <b>Mau nggak jadi alasan aku senyum tiap hari?</b></p>
+            
+            <div class="buttons">
+                <button class="btn" id="yesBtn" onclick="celebrate()">Mau!</button>
+                <button class="btn" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Nggak</button>
+            </div>
+        </div>
+
         <div id="happyContent" class="hidden">
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYybmN6dzZueXh6ZzRycXp6ZzRycXp6ZzRycXp6ZzRycXp6ZzR5JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZChars/MDJ9uLGiTLvmo/giphy.gif" class="success-img" alt="Happy Cat">
-            <h1>Yeay! I Love You! ❤️</h1>
-            <p>Chat aku sekarang ya, aku tunggu kabar baiknya! 😉</p>
-            <button class="btn" id="yesBtn" onclick="sendWA()">Kabari Dia ✨</button>
+            <h1>Yeay! ❤️</h1>
+            <p>Makasih ya udah mau jadi bagian dari hariku. Aku tunggu kabar darimu! 😉</p>
+            <button class="btn" id="yesBtn" onclick="sendWA()">Kabari Aku ✨</button>
         </div>
     </div>
 
     <script>
-        // Fungsi membuat animasi hati terbang
+        // Membuat hati terus berjatuhan di background
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
             document.body.appendChild(heart);
 
             setTimeout(() => {
@@ -139,36 +158,40 @@
             }, 5000);
         }
 
-        setInterval(createHeart, 300);
+        setInterval(createHeart, 400);
 
-        // Fungsi menggerakkan tombol "Nggak" saat didekati
+        // Tombol 'Nggak' lari pas didekati
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            const container = document.querySelector('.container');
             
-            noBtn.style.position = 'absolute';
+            // Batasan agar tombol tidak keluar layar
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            
+            noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
         }
 
-        // Fungsi saat tombol "Mau" diklik
+        // Efek saat jawaban "Mau"
         function celebrate() {
             document.getElementById('questionContent').classList.add('hidden');
             document.getElementById('happyContent').classList.remove('hidden');
             
-            // Efek tambahan: Hujan hati lebih banyak
-            for(let i=0; i<50; i++) {
-                setTimeout(createHeart, i * 50);
+            // Hujan hati besar-besaran
+            for(let i=0; i<60; i++) {
+                setTimeout(createHeart, i * 30);
             }
         }
 
-        // Fungsi kirim WA otomatis
+        // Arahkan ke WhatsApp
         function sendWA() {
-            const message = "Iya, aku mau! ❤️";
-            const phone = "6283831740156"; // Ganti dengan nomor kamu sendiri
+            const message = "Iya, aku mau! ❤️ (Tadi aku buka web dari kamu)";
+            const phone = "6283831740156"; // Ganti ke nomor WA-mu jika beda
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
     </script>
 </body>
-</html>
+    </html>
+    
